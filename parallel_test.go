@@ -1,7 +1,6 @@
 package parallel_test
 
 import (
-	"fmt"
 	"reflect"
 	"sort"
 	"testing"
@@ -61,26 +60,4 @@ func BenchmarkBegin(b *testing.B) {
 		}
 		// fmt.Println(y)
 	}
-}
-
-func ExampleBegin() {
-	inputArray := []customType{1, 2, 3, 4, 5}
-
-	// Convert input type to executor
-	executorArray := make([]parallel.Executor, 0, len(inputArray))
-	for _, ele := range inputArray {
-		executorArray = append(executorArray, ele)
-	}
-
-	for ele := range parallel.Begin(executorArray) {
-		// Cast interface{} to output type
-		output := ele.(customType)
-		fmt.Println(output)
-	}
-
-	// Unordered output: 1
-	// 4
-	// 9
-	// 16
-	// 25
 }
