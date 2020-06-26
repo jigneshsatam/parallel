@@ -2,6 +2,8 @@
 package parallel
 
 import (
+	"fmt"
+	"reflect"
 	"sync"
 )
 
@@ -10,18 +12,15 @@ type Executor interface {
 	Execute() interface{}
 }
 
-// func BuildExecutors(tasks []interface{}) []Executor {
-// 	executors := make([]Executor, len(tasks))
-// 	for i, executor := range tasks {
-// 		// executors[i] = append(executors, executor.(Executor))
-// 		executors[i] = executor.(Executor)
-// 	}
-// 	return executors
-// }
+// executors is a slice of Executor
+type executors []Executor
 
-// Begin starts the parallel execution of the executors provided
-func Begin(executors []Executor) <-chan interface{} {
-	return fanin(fanout(executors)...)
+// Run starts the parallel execution of the tasks provided
+// Run builds executors from any user type struct by casting the task in an Executor
+// To cast the task in an Executor the task user type should implement Executor interface
+// To implement Executor interface task user type needs to have method with `Execute() interface{}` signature
+func Run(tasks ...interface{}) <-chan interface{} {
+	return fanin(fanout(build(tasks...))...)
 }
 
 func fanout(executors []Executor) []<-chan interface{} {
@@ -63,4 +62,40 @@ func fanin(chans ...<-chan interface{}) <-chan interface{} {
 	}()
 
 	return out
+}
+
+// Builer and Converter functions
+
+func build(tasks ...interface{}) []Executor {
+	executors := executors{}
+	for _, task := range tasks {
+		switch reflect.TypeOf(task).Kind() {
+		case reflect.Slice:
+			t := reflect.ValueOf(task)
+			for i := 0; i < t.Len(); i++ {
+				executors = executors.append(convert(t.Index(i).Interface()))
+			}
+		default:
+			executors = executors.append(convert(task))
+		}
+	}
+	return executors
+}
+
+func convert(i interface{}) (e Executor, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = r.(error)
+			fmt.Println(r)
+		}
+	}()
+	e = i.(Executor)
+	return e, err
+}
+
+func (execs executors) append(e Executor, err error) executors {
+	if e != nil {
+		execs = append(execs, e)
+	}
+	return execs
 }

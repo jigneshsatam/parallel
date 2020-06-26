@@ -15,49 +15,74 @@ func (c customType) Execute() interface{} {
 	return c * c
 }
 
-func TestBegin(t *testing.T) {
+var testCases = []struct {
+	name string
+	ip   interface{}
+	op   []int
+}{
+	{
+		name: "Valid Tasks",
+		ip:   []customType{1, 2, 3, 4, 5},
+		op:   []int{1, 4, 9, 16, 25},
+	},
+	{
+		name: "Invalid Tasks - where Execute method not overridden by input type",
+		ip:   []int{1, 5},
+		op:   []int{},
+	},
+	{
+		name: "Valid Single Task",
+		ip:   customType(5),
+		op:   []int{25},
+	},
+	{
+		name: "Inalid Single Task - where Execute method not overridden by input type",
+		ip:   5,
+		op:   []int{},
+	},
+	{
+		name: "Valid Empty Tasks",
+		ip:   []customType{},
+		op:   []int{},
+	},
+	{
+		name: "Invalid Empty Tasks - where Execute method not overridden by input type",
+		ip:   []int{},
+		op:   []int{},
+	},
+}
+
+func TestRun(t *testing.T) {
 	t.Parallel()
-	inputArray := []customType{1, 2, 3, 4, 5}
-	want := []int{1, 4, 9, 16, 25}
-	executorArray := make([]parallel.Executor, 0, len(inputArray))
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			outputArray := []customType{}
+			for ele := range parallel.Run(tc.ip) {
+				outputArray = append(outputArray, ele.(customType))
+			}
 
-	// Convert input to executor
-	for _, ele := range inputArray {
-		executorArray = append(executorArray, ele)
-	}
+			intArr := []int{}
+			for _, ele := range outputArray {
+				intArr = append(intArr, int(ele))
+			}
 
-	outputArray := []customType{}
-	for ele := range parallel.Begin(executorArray) {
-		outputArray = append(outputArray, ele.(customType))
-	}
+			sort.Ints(intArr)
 
-	intArr := []int{}
-	for _, ele := range outputArray {
-		intArr = append(intArr, int(ele))
-	}
-
-	sort.Ints(intArr)
-
-	if !reflect.DeepEqual(want, intArr) {
-		t.Errorf("Go Failed \n want ===> %v \n got  ===> %v", want, intArr)
+			if !reflect.DeepEqual(tc.op, intArr) {
+				t.Errorf("Run Failed for test %v \n want ===> %v \n got  ===> %v", tc.name, tc.op, intArr)
+			}
+		})
 	}
 }
 
 func BenchmarkBegin(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-
-		// }
 		arr := []customType{1, 2, 3, 4, 5}
-		arrN := make([]parallel.Executor, 0, len(arr))
-		for _, ele := range arr {
-			arrN = append(arrN, ele)
+		output := []customType{}
+		for ele := range parallel.Run(arr) {
+			output = append(output, ele.(customType))
 		}
-		x := parallel.Begin(arrN)
-		y := make([]customType, 0, len(arr))
-		// fmt.Println(arrN)
-		for ele := range x {
-			y = append(y, ele.(customType))
-		}
-		// fmt.Println(y)
 	}
 }
