@@ -8,7 +8,7 @@ import (
 
 type customExampleType int
 
-// execute -> Override `execute()` method to make customExampleType as an Executor
+// Execute -> Override `Execute() interface{}` method to make customExampleType as an Executor
 func (c customExampleType) Execute() interface{} {
 	return c * c
 }
