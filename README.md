@@ -31,7 +31,7 @@ type user struct {
 }
 
 // Execute() -> Overriden `Execute() interface{}` method
-func (u user) Execute() interface{} { 
+func (u user) Execute() interface{} {
   return getBirthDate(u)
 }
 
@@ -39,16 +39,16 @@ func getBirthDate(u user) string {
   return u.name + " 1991-03-13"
 }
 
-func Example() { 
-  users := []customExampleType{ user{"foo"}, user{"bar"}, user{"baz"}}
+func Example() {
+  users := []user{user{"foo"}, user{"bar"}, user{"baz"}}
 
-  for op := range parallel.Run(users) { 
-    // Cast `interface{}` to desired output type 
-    output := op.(string) 
-    fmt.Println(output) 
+  for op := range parallel.Run(users) {
+    // Cast `interface{}` to desired output type
+    output := op.(string)
+    fmt.Println(output)
   }
- 
-  // Unordered output: 
+
+  // Unordered output:
   // "bar 1991-03-13"
   // "foo 1991-03-13"
   // "baz 1991-03-13"
