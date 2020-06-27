@@ -2,9 +2,9 @@ language: go
 
 go:
   - 1.10.x
-  # - 1.11.x
-  # - 1.12.x
-  # - 1.13.x
+  - 1.11.x
+  - 1.12.x
+  - 1.13.x
   # - 1.14.x
 
 env:
@@ -20,7 +20,7 @@ before_install:
 git:
   depth: 1
 
-os: [linux]
+os: [linux, osx]
 # os: [linux, osx, windows]
 
 # script:
