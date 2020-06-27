@@ -8,8 +8,9 @@ go:
   - 1.14.x
 
 env:
-  - GO111MODULE=on
-  - CC_TEST_REPORTER_ID=a68ad3c72a402d4a6b564f8a431ca2f3f5c72b179d73f9eadcf554461119d106
+  global:
+    - GO111MODULE=on
+    - CC_TEST_REPORTER_ID=a68ad3c72a402d4a6b564f8a431ca2f3f5c72b179d73f9eadcf554461119d106
 
 go_import_path: github.com/JigneshSatam/parallel
 
@@ -21,17 +22,13 @@ git:
 
 os: [linux, osx, windows]
 
+before_script:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod +x ./cc-test-reporter; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter before-build; fi
+
 script:
-  - go test -race -v ./...
+  - go test -race -v -coverprofile c.out ./...
 
-# before_script:
-#   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-#   - chmod +x ./cc-test-reporter
-#   - ./cc-test-reporter before-build
-
-# script:
-#   - go test -race -v -coverprofile c.out ./...
-
-
-# after_script:
-#   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_script:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
