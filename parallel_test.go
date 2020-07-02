@@ -8,10 +8,10 @@ import (
 	"github.com/JigneshSatam/parallel"
 )
 
-type customType int
+type customUserType int
 
-// execute -> Overridden `execute()` method to make customType as an executor
-func (c customType) Execute() interface{} {
+// execute -> Overridden `execute()` method to make customUserType as an executor
+func (c customUserType) Execute() interface{} {
 	return c * c
 }
 
@@ -22,7 +22,7 @@ var testCases = []struct {
 }{
 	{
 		name: "Valid Tasks",
-		ip:   []customType{1, 2, 3, 4, 5},
+		ip:   []customUserType{1, 2, 3, 4, 5},
 		op:   []int{1, 4, 9, 16, 25},
 	},
 	{
@@ -32,7 +32,7 @@ var testCases = []struct {
 	},
 	{
 		name: "Valid Single Task",
-		ip:   customType(5),
+		ip:   customUserType(5),
 		op:   []int{25},
 	},
 	{
@@ -42,7 +42,7 @@ var testCases = []struct {
 	},
 	{
 		name: "Valid Empty Tasks",
-		ip:   []customType{},
+		ip:   []customUserType{},
 		op:   []int{},
 	},
 	{
@@ -58,9 +58,9 @@ func TestRun(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			outputArray := []customType{}
+			outputArray := []customUserType{}
 			for ele := range parallel.Run(tc.ip) {
-				outputArray = append(outputArray, ele.(customType))
+				outputArray = append(outputArray, ele.(customUserType))
 			}
 
 			intArr := []int{}
@@ -79,10 +79,10 @@ func TestRun(t *testing.T) {
 
 func BenchmarkBegin(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		arr := []customType{1, 2, 3, 4, 5}
-		output := []customType{}
+		arr := []customUserType{1, 2, 3, 4, 5}
+		output := []customUserType{}
 		for ele := range parallel.Run(arr) {
-			output = append(output, ele.(customType))
+			output = append(output, ele.(customUserType))
 		}
 	}
 }

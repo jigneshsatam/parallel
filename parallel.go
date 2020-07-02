@@ -1,4 +1,6 @@
-// Package parallel executes any tasks in parallel by using Golang fanout fanin concurrency pattern.
+// Package parallel executes independent tasks in parallel by using Golang fanout fanin concurrency pattern.
+//
+// Concurrency Made Easy
 package parallel
 
 import (
@@ -7,7 +9,7 @@ import (
 	"sync"
 )
 
-// Executor is an interface which has to have execute function which will be implicitly invoked to execute the concurrent tasks
+// Executor is an interface which has to have execute function which will be implicitly invoked to execute the concurrent tasks.
 type Executor interface {
 	Execute() interface{}
 }
@@ -15,10 +17,11 @@ type Executor interface {
 // executors is a slice of Executor
 type executors []Executor
 
-// Run starts the parallel execution of the tasks provided
-// Run builds executors from any user type struct by casting the task in an Executor
-// To cast the task in an Executor the task user type should implement Executor interface
-// To implement Executor interface task user type needs to have method with `Execute() interface{}` signature
+// Run starts the parallel execution of the tasks provided.
+//
+// It casts user-defined type tasks into `Executor interface` to builds executors.
+//
+// To cast the task in an `Executor interface` the user-defined type `task` needs to have method with `Execute() interface{}` signature.
 func Run(tasks ...interface{}) <-chan interface{} {
 	return fanin(fanout(build(tasks...))...)
 }

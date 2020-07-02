@@ -6,19 +6,23 @@ import (
 	"github.com/JigneshSatam/parallel"
 )
 
-type customExampleType int
+// customType -> Let `customType` be a user-defined type
+type customType int
 
-// Execute -> Override `Execute() interface{}` method to make customExampleType as an Executor
-func (c customExampleType) Execute() interface{} {
+// Execute -> Create `Execute() interface{}` method for customType
+func (c customType) Execute() interface{} {
 	return c * c
 }
 
 func Example() {
-	tasks := []customExampleType{1, 2, 3, 4, 5}
+	tasks := []customType{1, 2, 3, 4, 5}
 
-	for op := range parallel.Run(tasks) {
+	// Call `parallel.Run()` to start parallel execution
+	outputChannel := parallel.Run(tasks)
+
+	for op := range outputChannel {
 		// Cast interface{} to desired output type
-		output := op.(customExampleType)
+		output := op.(customType)
 		fmt.Println(output)
 	}
 
