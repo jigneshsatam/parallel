@@ -44,3 +44,36 @@ jobs:
 
       - name: Test with the Go CLI
         run: go test -race -v -coverprofile c.out ./...
+
+  coverage:
+
+    needs: [ test ]
+
+    env:
+      CC_TEST_REPORTER_ID: a68ad3c72a402d4a6b564f8a431ca2f3f5c72b179d73f9eadcf554461119d106
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Coverage
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+          go test ./... -coverprofile c.out
+
+          ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+
+        # - run: npm install -g yarn
+        # - run: yarn install
+        # - run: yarn build
