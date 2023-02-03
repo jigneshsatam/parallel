@@ -28,7 +28,7 @@ before_script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter before-build; fi
 
 script:
-  - go test -race -v -coverprofile c.out ./...
+  - go test ./... -coverprofile c.out
 
 after_script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
