@@ -77,12 +77,24 @@ func TestRun(t *testing.T) {
 	}
 }
 
-func BenchmarkBegin(b *testing.B) {
+func BenchmarkRun(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		arr := []customUserType{1, 2, 3, 4, 5}
+		op := []int{1, 4, 9, 16, 25}
 		output := []customUserType{}
 		for ele := range parallel.Run(arr) {
 			output = append(output, ele.(customUserType))
+		}
+
+		intArr := []int{}
+		for _, ele := range output {
+			intArr = append(intArr, int(ele))
+		}
+
+		sort.Ints(intArr)
+
+		if !reflect.DeepEqual(op, intArr) {
+			b.Errorf("Run Failed for test \n want ===> %v \n got  ===> %v", op, intArr)
 		}
 	}
 }
