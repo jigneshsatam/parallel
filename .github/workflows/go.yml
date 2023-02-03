@@ -71,7 +71,7 @@ jobs:
 
           go test ./... -coverprofile c.out
 
-          ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+          ./cc-test-reporter after-build --exit-code 0
 
 
         # - run: npm install -g yarn
