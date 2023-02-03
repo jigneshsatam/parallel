@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: ['1.19.x']
-        # go-version: ['1.11.x', '1.12.x', '1.13.x', '1.14.x', '1.15.x', '1.16.x', '1.17.x', '1.18.x', '1.19.x']
+        go-version: ['1.11.x', '1.12.x', '1.13.x', '1.14.x', '1.15.x', '1.16.x', '1.17.x', '1.18.x', '1.19.x']
 
     steps:
 
@@ -32,8 +31,7 @@ jobs:
 
     strategy:
       matrix:
-        go-version: ['1.19.x']
-        # go-version: ['1.11.x', '1.12.x', '1.13.x', '1.14.x', '1.15.x', '1.16.x', '1.17.x', '1.18.x', '1.19.x']
+        go-version: ['1.11.x', '1.12.x', '1.13.x', '1.14.x', '1.15.x', '1.16.x', '1.17.x', '1.18.x', '1.19.x']
 
     steps:
 
@@ -74,8 +72,3 @@ jobs:
           go test ./... -coverprofile c.out
 
           ./cc-test-reporter after-build -p github.com/JigneshSatam/parallel --exit-code 0
-
-
-        # - run: npm install -g yarn
-        # - run: yarn install
-        # - run: yarn build
