@@ -1,4 +1,4 @@
-name: Go
+name: Build
 
 on: [push, pull_request]
 
@@ -50,7 +50,7 @@ jobs:
     needs: [ test ]
 
     env:
-      CC_TEST_REPORTER_ID: a68ad3c72a402d4a6b564f8a431ca2f3f5c72b179d73f9eadcf554461119d106
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
     runs-on: ubuntu-latest
 
@@ -71,4 +71,4 @@ jobs:
 
           go test ./... -coverprofile c.out
 
-          ./cc-test-reporter after-build -p github.com/JigneshSatam/parallel --exit-code 0
+          ./cc-test-reporter after-build -p github.com/JigneshSatam/parallel
