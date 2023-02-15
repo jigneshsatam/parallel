@@ -72,4 +72,4 @@ jobs:
 
           go test ./... -coverprofile c.out
 
-          ./cc-test-reporter after-build -p github.com/JigneshSatam/parallel
+          ./cc-test-reporter after-build -p github.com/jigneshsatam/parallel
