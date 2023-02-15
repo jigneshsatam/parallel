@@ -3,7 +3,7 @@ package parallel_test
 import (
 	"fmt"
 
-	"github.com/JigneshSatam/parallel"
+	"github.com/jigneshsatam/parallel"
 )
 
 // customType -> Let `customType` be a user-defined type

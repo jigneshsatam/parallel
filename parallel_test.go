@@ -5,7 +5,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/JigneshSatam/parallel"
+	"github.com/jigneshsatam/parallel"
 )
 
 type customUserType int
