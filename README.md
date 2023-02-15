@@ -74,4 +74,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update the tests as appropriate.
 
 ## License
-This project is licensed under the **MIT** License - see the [LICENSE.md](https://github.com/JigneshSatam/parallel/blob/master/LICENSE) file for details
+This project is licensed under the **MIT** License - see the [LICENSE.md](https://github.com/jigneshsatam/parallel/blob/master/LICENSE) file for details
