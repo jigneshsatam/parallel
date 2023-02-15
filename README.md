@@ -13,7 +13,7 @@ go get -u github.com/jigneshsatam/parallel
 
 ## Usage
 
-Example code snippet: https://play.golang.org/p/uHBw49pwFwt
+Example code snippet: https://go.dev/play/p/Hf6jkXNFB6E
 
 ### Step 1: Import the package
 ```go
